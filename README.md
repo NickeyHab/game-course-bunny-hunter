@@ -1,1 +1,1 @@
-# game-course-bunny-hunter
+# bunny-hunter
