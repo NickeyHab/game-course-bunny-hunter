@@ -7,8 +7,10 @@ using UnityEngine.AI;
 public class NPCMovement : MonoBehaviour
 {
     [SerializeField] private Transform target;
+    [SerializeField] private bool isChasing = false;
+    [SerializeField] private float chaseDistance = 20f;
     [SerializeField] private bool isAttacking = false;
-    [SerializeField] private float attackDistance = 20f;
+    [SerializeField] private float attackDistance = 2.1f;
     [SerializeField] private float stopAttackDistance = 20f;
     [SerializeField] private bool isFleeing = false;
     [SerializeField] private float fleeDistance = 20f;
@@ -26,34 +28,54 @@ public class NPCMovement : MonoBehaviour
     void Update()
     {
         Distance();
-        Attacking();
-        Fleeing();
+        Attack();
+        Flee();
     }
 
     private void Distance()
     {
         Vector3 distanceVector = target.position - transform.position;
-        float CurrentDistance = Vector3.Magnitude(distanceVector);
+        CurrentDistance = Vector3.Magnitude(distanceVector);
     }
-    private void Attacking()
+    private void Attack()
     {
-        if (CurrentDistance < attackDistance && isAttacking)
+        if (!isAttacking && CurrentDistance < attackDistance && isChasing)
+        {
+            isAttacking = true;
+            animator.SetBool("attack", isAttacking);
+        }
+        else if (CurrentDistance < chaseDistance && isChasing)
         {
             agent.SetDestination(target.position);
-            isAttacking = true;
+            animator.SetTrigger("walk");
         }
-        else if (CurrentDistance > attackDistance)
+        else if (CurrentDistance > stopAttackDistance)
         {
-            isAttacking = false;
+            agent.ResetPath();
+            animator.SetTrigger("idle");
         }
-        Debug.Log("distance is" + distanceVector);
     }
 
-    private void Fleeing()
+    private void Flee()
     {
         if (CurrentDistance < fleeDistance && isFleeing)
         {
-            agent.SetDestination(target.position + Vector3.Normalize(distanceVector));
+            agent.SetDestination(transform.position + (transform.position - target.position).normalized * fleeDistance);
+            agent.speed = 3.5f;
+            animator.SetTrigger("walk");
+
+            if (CurrentDistance < fleeDistance / 2)
+            {
+                agent.speed = 10f;
+                animator.SetTrigger("run");
+                animator.ResetTrigger("walk");
+            }
+
+        }
+        else if (CurrentDistance > fleeDistance)
+        {
+            agent.ResetPath();
+            animator.SetTrigger("idle");
         }
     }
 }
