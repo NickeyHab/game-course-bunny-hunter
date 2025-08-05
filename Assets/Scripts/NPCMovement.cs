@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,15 +19,18 @@ public class NPCMovement : MonoBehaviour
     private Vector3 distanceVector;
     private NavMeshAgent agent;
     private Animator animator;
+    private NPCLife npcLife;
     void Start()
     {
         target = GameObject.Find("PlayerCapsule").transform;
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        npcLife = GetComponent<NPCLife>();
     }
 
     void Update()
     {
+        if (!npcLife.isAlive) return;
         Distance();
         Attack();
         Flee();
@@ -47,12 +51,24 @@ public class NPCMovement : MonoBehaviour
         else if (CurrentDistance < chaseDistance && isChasing)
         {
             agent.SetDestination(target.position);
+            agent.speed = 3.5f;
             animator.SetTrigger("walk");
+            animator.ResetTrigger("idle");
+            animator.ResetTrigger("run");
+
+            if (CurrentDistance < chaseDistance / 2 && isChasing)
+            {
+                agent.SetDestination(target.position);
+                agent.speed = 10f;
+                animator.SetTrigger("run");
+                animator.ResetTrigger("walk");
+            }
         }
         else if (CurrentDistance > stopAttackDistance)
         {
             agent.ResetPath();
             animator.SetTrigger("idle");
+            animator.ResetTrigger("walk");
         }
     }
 

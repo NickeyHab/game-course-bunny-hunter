@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Bow : MonoBehaviour
+public class Bow : Weapon
 {
     public GameObject arrowPrefab;
     public Transform arrowLocation;
     public float arrowSpeed = 100f;
     private InputSystem_Actions playerControls;
     private InputAction fire;
-    public float fireCD = 1f;
+    private float fireCD = 1f;
     private float lastFireTime = 0f;
     private ArrowPool arrowPool;
     private AudioSource audioSource;
@@ -19,7 +19,7 @@ public class Bow : MonoBehaviour
         arrowPool = FindAnyObjectByType<ArrowPool>();
         audioSource = GetComponent<AudioSource>();
     }
-    private void Awake()
+    public void Awake()
     {
         playerControls = new InputSystem_Actions();
     }
@@ -38,17 +38,18 @@ public class Bow : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        if (Time.time < lastFireTime + fireCD)
+        if (Time.time < lastFireTime + fireCD || ammo <= 0)
             return;
 
         lastFireTime = Time.time;
 
         GameObject arrow = arrowPool.GetArrow();
         arrow.transform.SetPositionAndRotation(arrowLocation.position, arrowLocation.rotation);
-        Rigidbody rb = arrow.GetComponent<Rigidbody>();
-        rb.linearVelocity = Camera.main.transform.forward * arrowSpeed;
+        arrow.GetComponent<Rigidbody>().linearVelocity = Camera.main.transform.forward * arrowSpeed;
 
         audioSource.PlayOneShot(bowShotSFX);
+        ammo--;
+        UpdateAmmoDisplay();
     }
 }
 
