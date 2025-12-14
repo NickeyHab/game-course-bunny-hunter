@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bd3ed065b538a0b4fa38a6bda5b6d688, type: 2}
+    - target: {fileID: 8656285644037328784, guid: 7ae956b4f54394e80818898d8f4d30c6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -96,10 +100,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da99da83519a66b45a1eb08f5ec1c8fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDistance: 20
-  fleeDistance: 20
+  target: {fileID: 0}
   isAttacking: 1
+  attackDistance: 20
+  stopAttackDistance: 20
   isFleeing: 0
+  fleeDistance: 20
 --- !u!195 &3893167353203590421
 NavMeshAgent:
   m_ObjectHideFlags: 0
