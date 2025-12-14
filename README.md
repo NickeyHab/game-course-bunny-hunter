@@ -8,3 +8,8 @@ Learned:
 * Assign animations
 * Create weapons like bow or sniper and weapon switching
 * Overlay UI like ammo counter and hp bar
+
+What I would add if I would work this game out:
+* More interesting map
+* Fun gameplay loop with the NPC like making them drop items or something
+* Add SFX to weapons or maybe even animations
