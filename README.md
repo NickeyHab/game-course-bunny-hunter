@@ -2,14 +2,18 @@
 
 Project from game dev course #2. Onedrive download [here](https://1drv.ms/u/c/f4bdefac68467ccd/IQBABg0czZn2SaP1JJHZftr9AQAldnSXWlSouDopLUFEf34?e=oREqmB).
 
-Learned:
+Learned from the course:
 * Create terrain with textures. Including trees, grass, etc.
 * Simple AI
 * Assign animations
 * Create weapons like bow or sniper and weapon switching
 * Overlay UI like ammo counter and hp bar
 
-What I would add if I would work this game out:
+Self added:
+* Object pooling
+* House asset with some lighting
+
+Future features:
 * More interesting map
 * Fun gameplay loop with the NPC like making them drop items or something
 * Add SFX to weapons or maybe even animations
